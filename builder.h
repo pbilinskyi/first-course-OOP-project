@@ -5,15 +5,14 @@
 
 class Builder {
 public:
-	bool loadData(Info&, const char* filename);
+	void loadData(Info&, const char* filename);
 private:
 	Lexer lex;
 	size_t students_amount = 0;
 	int stateScaleMarks_sum = 0;
 
-
 	const std::string message400 = "400 error in working with file";
-	const std::string message500 = "500 bad_alloc"
+	const std::string message500 = "500 bad_alloc";
 
 	const std::string message100 = "100 title is upsent";
 	const std::string message101 = "101 more than one title";

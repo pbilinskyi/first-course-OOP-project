@@ -1,11 +1,19 @@
 #include "builder.h"
 #include <iostream>
-#include <ifstream>
+#include <fstream>
+#include <string>
 #include <stdexcept>
 
 void Builder::loadData(Info& i, const char* filename) {
-	ifstream is(filename);
-	if (!is)  throw std::invalid_argument(message400);
-	
+	std::ifstream ifs(filename);
+	if (!ifs)  throw std::invalid_argument(message400);
 
+	std::string s;
+	while (getline(ifs, s)) {
+
+	}
+
+	if (!ifs.eof()) throw std::invalid_argument(message400);
+	ifs.close();
+	if (!ifs) throw std::invalid_argument(message400);
 }
