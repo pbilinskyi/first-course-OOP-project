@@ -7,10 +7,23 @@ class Builder {
 public:
 	void loadData(Info&, const char* filename);
 private:
+	void parseLine(std::string & s);
 	Lexer lex;
 	size_t students_amount = 0;
 	int stateScaleMarks_sum = 0;
 
+	//temp data
+	std::string studentsName;
+	std::string surname;
+	std::string gradebookCode;
+	std::string groupCode;
+	std::string subjectsName;
+	int summaryMark;
+	int termMark;
+	int examMark;
+	int stateScaleMark;
+
+	//diagnostical messages
 	const std::string message400 = "400 error in working with file";
 	const std::string message500 = "500 bad_alloc";
 
@@ -30,5 +43,4 @@ private:
 	const std::string message301 = "301 wrong numeration of notes";
 	const std::string message302 = "302 wrong number of fields in string";
 	const std::string message303 = "303 other error in string";
-	const std::string message304 = "";
 };
