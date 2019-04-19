@@ -41,9 +41,14 @@ Lexer::LineType Lexer::load(std::string source) {
 bool Lexer::next(std::string &field) {
 	bool isSuccesful = false;
 
-//empty string contains 1 empty filed []
-	if (typeOfLoadedString == LineType::Empty) field = "";
-
+//empty string contains 1 empty field []
+//this block must match the field [] of empty string only once
+	if ((typeOfLoadedString == LineType::Empty)&&(pos_==len)) {
+		field = "";
+		isSuccesful = true;
+		++pos_;
+	}
+		
 //there is one empty field [] between last delimiter and the end of the string
 	else if ((pos_ == len) && (isDelimiter(s[pos_ - 1]))) {
 		field = "";

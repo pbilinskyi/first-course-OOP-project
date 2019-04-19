@@ -117,12 +117,14 @@
   <ItemGroup>
     <ClCompile Include="builder.cpp" />
     <ClCompile Include="Info.cpp" />
+    <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="lowLevelFunc.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="builder.h" />
     <ClInclude Include="Info.h" />
+    <ClInclude Include="Lexer.h" />
     <ClInclude Include="lowLevelFunc.h" />
   </ItemGroup>
   <ItemGroup>

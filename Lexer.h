@@ -19,6 +19,7 @@ public:
 	//Assign argument to the value of next field of loaded string from position pos_. Ignore whitespaces.
 	//pre: argument must not be nullptr.
 	//post: argument now is changed to the value of found field. 
+	//		if the end of the string is reached, return false 
 	bool next(std::string &);
 
 	//Indicate if the end of the string reached.
