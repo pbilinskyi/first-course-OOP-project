@@ -7,8 +7,16 @@ class Builder {
 public:
 	void loadData(Info&, const char* filename);
 private:
-	Lexer::LineType parseLine(std::string & s);
+	std::pair<Lexer::LineType, int> parseLine(std::string & s);
+	
+	//this method is responsible for 303 erorr, (it handles errors, that can occur during the convertation)
+	//if next() returns false, throw i_a with message 302 (because next() returns false iff the end of the string is reached)
+	//if the convertation is failed, invalid_argument with diagnostical message is thrown
+	int getIntAndConvert(Lexer& lex, int numberOfString, std::string& s);
+	void getString(Lexer& lex, int numberOfString, std::string& field);
+
 	Lexer lex;
+	//fields from header and footer
 	int notes_number = 0;
 	int stateScaleMarks_sum = 0;
 	//indicators if header/footer/note row is already red
@@ -33,23 +41,23 @@ private:
 	int stateScaleMark;
 
 	//diagnostical messages
-	const std::string message400 = "400 error in working with file";
-	const std::string message500 = "500 bad_alloc";
+	const std::string message400 = "error in working with file";
+	const std::string message500 = "bad_alloc";
 
-	const std::string message100 = "100 header is upsent";
-	const std::string message101 = "101 more than one header";
-	const std::string message102 = "102 header isn't concerted with content of file";
-	const std::string message103 = "103 header has wrong number of fields";
-	const std::string message104 = "104 other error in header";
+	const std::string message100 = "header is upsent";
+	const std::string message101 = "more than one header";
+	const std::string message102 = "header isn't concerted with content of file";
+	const std::string message103 = "header has wrong number of fields";
+	const std::string message104 = "other error in header";
 	
-	const std::string message200 = "200 footer is upsent";
-	const std::string message201 = "201 more than one footer";
-	const std::string message202 = "202 footer isn't concerted with content of file";
-	const std::string message203 = "203 footer has wrong number of fields";
-	const std::string message204 = "204 other error in footer";
+	const std::string message200 = "footer is upsent";
+	const std::string message201 = "more than one footer";
+	const std::string message202 = "footer isn't concerted with content of file";
+	const std::string message203 = "footer has wrong number of fields";
+	const std::string message204 = "other error in footer";
 	
-	const std::string message300 = "300 the order <header><notes><footer> is violated";
-	const std::string message301 = "301 wrong numeration of notes";
-	const std::string message302 = "302 wrong number of fields in string";
-	const std::string message303 = "303 other error in string";
+	const std::string message300 = "the order <header><notes><footer> is violated";
+	const std::string message301 = "wrong numeration of notes";
+	const std::string message302 = "wrong number of fields in string";
+	const std::string message303 = "other error in string";
 };

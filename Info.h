@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-class TestStudentResult {
+/*class TestStudentResult {
 	void checkSuccesfulConstruction(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark){
 		try {
 			Info::Student::SubjectResult sr(name, summaryMark, termMark, examMark, stateScaleMark);
@@ -16,7 +16,7 @@ class TestStudentResult {
 	//   Check if the agregated fields are changed.
 	//2. Test work of constructor for incorrect input data (there must be an exception).
 	//3. Test the comparison, using array of StudentResult.
-};
+};*/
 
 class Info {
 private:
@@ -24,7 +24,7 @@ private:
 	//=====================
 	class Student {
 	private:
-		friend class TestStudentResult;
+		//friend class TestStudentResult;
 		//====================
 		class SubjectResult {
 		private:

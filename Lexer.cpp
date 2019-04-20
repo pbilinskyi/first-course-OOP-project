@@ -100,6 +100,11 @@ bool Lexer::isWhitespace(char c) const noexcept
 	return ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r') || (c == '\v'));
 }
 
+Lexer::LineType Lexer::getLineType() const noexcept
+{
+	return typeOfLoadedString;
+}
+
 /*const char* Lexer::getTypeOfLine() const noexcept
 {
 	switch (typeOfLoadedString)

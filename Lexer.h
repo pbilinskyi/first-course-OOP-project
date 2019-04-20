@@ -30,6 +30,7 @@ public:
 
 	//indicate if the argument is a whitespace.
 	bool isWhitespace(char) const noexcept;
+	LineType getLineType() const noexcept;
 private:
 	std::string s;
 	size_t len;

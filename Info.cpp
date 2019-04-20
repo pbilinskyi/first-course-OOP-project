@@ -8,7 +8,7 @@ bool Info::load(std::string & name, std::string & surname, std::string & groupCo
 	/*
 	...object is loading into Students container...
 	*/
-	//	return false;
+	return true;
 }
 
 bool Info::load(std::string & name, std::string & surname, std::string & groupCode, std::string & gradebookCode, std::string & subjectName, int summaryMark, int termMark, int examMark, int stateScaleMark)
@@ -23,6 +23,7 @@ bool Info::load(std::string & name, std::string & surname, std::string & groupCo
 	catch (std::invalid_argument &ia) {
 		std::cout << "Loading into Students container is failed. Error: " << ia.what() << std::endl;
 	}
+	return flag;
 }
 
 int Info::getNotesNumber() const noexcept
