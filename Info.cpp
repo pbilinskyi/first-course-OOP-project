@@ -17,6 +17,9 @@ bool Info::load(std::string & name, std::string & surname, std::string & groupCo
 	try {
 		Student st(name, surname, groupCode, gradebookCode);
 		st.load(subjectName, summaryMark, termMark, examMark, stateScaleMark);
+		/*
+		Student is adding into Students container...
+		*/
 		std::cout << "Loading into Students container is succesful. New student: " << st.getName() << std::endl;
 		flag = true;
 	}
@@ -53,10 +56,10 @@ bool Info::Student::SubjectResult::isValidSubjectName(std::string & name) const 
 	bool flag = true;
 	size_t n = name.size();
 	for (int i = 0; i < n; i++)	{
-		if ((!isalpha(name[i])) && (name[i] != '"') && (name[i] != ' ') && (name[i] != '-')) flag = false;
+		if ((!isalpha(name[i])) && (name[i] != '\"') && (name[i] != ' ') && (name[i] != '-')) flag = false;
 	}
 	if (n > 62) flag = false;
-	return false;
+	return flag;
 }	
 
 bool Info::Student::SubjectResult::isCorrectData(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark) const noexcept
@@ -65,8 +68,9 @@ bool Info::Student::SubjectResult::isCorrectData(std::string& name, int summaryM
 	flag = (stateScaleMark >= -1) && (stateScaleMark <= 5) && (stateScaleMark != 1);
 	flag = areConcerted(stateScaleMark, summaryMark);
 	flag = (termMark <= 60) && (termMark >= 0);
-	flag = ((examMark <= 60) && (examMark >= 24))||(examMark == 0);
+	flag = ((examMark <= 40) && (examMark >= 24))||(examMark == 0);
 	flag = (summaryMark == (termMark + examMark));
+	flag = isValidSubjectName(name);
 
 	return flag;
 }
@@ -168,7 +172,7 @@ bool Info::Student::isValidGradeBookCode(std::string & gradeBookCode) const noex
 		if (!isdigit(gradeBookCode[i])) flag = false;
 	}
 	if (n > 8) flag = false;
-	return false;
+	return flag;
 }
 
 bool Info::Student::isValidGroupCode(std::string & groupCode) const noexcept

@@ -1,7 +1,7 @@
 #include "builder.h"
 #include <iostream>
 #include <fstream>
-#include <string>
+//#include <string>
 #include <stdexcept>
 
 //pre: input file must satisfy all of the requirements (those are described in the condition of Labaratory work)
@@ -14,32 +14,34 @@ void Builder::loadData(Info& inf, const char* filename) {
 	std::string s;
 	int notes_counter = 0;
 	int expectedNextNumber = 1;
+	notes_number_header = 1;
 	while (getline(ifs, s)) {
 		std::pair<Lexer::LineType, int> stringData = parseLine(s, physicalNumberOfLine);
 
 		switch (stringData.first)
 		{
 		case Lexer::LineType::Line: 
+			++notes_counter;
 			if ((!headerIsFound) || (footerIsFound)) throw std::invalid_argument("300 " + std::to_string(physicalNumberOfLine) + " " + message300);
 			if (stringData.second != expectedNextNumber) throw std::invalid_argument("301 " + std::to_string(physicalNumberOfLine) + " " + message301);
-			
+			else expectedNextNumber++;
 			inf.load(studentsName, surname, groupCode, gradebookCode,
 				subjectsName, summaryMark, termMark, examMark, stateScaleMark);
 			break;
 		
 		case Lexer::LineType::Header:
+			++notes_counter;
 			if (headerIsFound) throw std::invalid_argument("101 " + std::to_string(physicalNumberOfLine) + " " + message101);
+			else headerIsFound = true;
 			if (notes_number_header != notes_counter) throw std::invalid_argument("102 " + std::to_string(physicalNumberOfLine) + " " + message102);
 			break;
 		case Lexer::LineType::Footer:
+			++notes_counter;
 			if (footerIsFound) throw std::invalid_argument("201 " + std::to_string(physicalNumberOfLine) + " " + message201);
+			else footerIsFound = true; 
 			break;
 		default:
 			break;
-		}
-
-		if (stringData.first != Lexer::LineType::Empty) {
-			++notes_counter;
 		}
 
 		++physicalNumberOfLine;
@@ -49,13 +51,13 @@ void Builder::loadData(Info& inf, const char* filename) {
 	if (!footerIsFound) throw std::invalid_argument("300 " + std::to_string(physicalNumberOfLine) + " " + message300);
 	
 	if (!ifs.eof()) throw std::invalid_argument("400 " + std::to_string(physicalNumberOfLine) + " " + message400);
-	ifs.close();
-	if (!ifs) throw std::invalid_argument("400 " + std::to_string(physicalNumberOfLine) + " " + message400);
+	//ifs.close();
+	//if (!ifs) throw std::invalid_argument("400 " + std::to_string(physicalNumberOfLine) + " " + message400);
 }
 
 //pre: the fields of s mush hold the requirements, that is stated is condition of Labaratory work
 //post: throw invalid_argument, if s don't satisfy the requirements
-//if s is empty line, then returned numberOfString == -1
+//in our notations, numberOfLine equals -1 means that the string doesn't have a number (string is empty, or header, or footer).
 std::pair<Lexer::LineType, int> Builder::parseLine(std::string& s, int physicalNumberOfLine) {
 	Lexer::LineType lnType = lex.load(s);
 	//skip empty string
@@ -79,7 +81,7 @@ std::pair<Lexer::LineType, int> Builder::parseLine(std::string& s, int physicalN
 		summaryMark = getIntAndConvert(lex, physicalNumberOfLine, field);
 		stateScaleMark = getIntAndConvert(lex, physicalNumberOfLine, field);
 		examMark = getIntAndConvert(lex, physicalNumberOfLine, field);
-		gradebookCode = getIntAndConvert(lex, physicalNumberOfLine, field);
+		getString(lex, physicalNumberOfLine, gradebookCode);
 		getString(lex, physicalNumberOfLine, surname);
 		getString(lex, physicalNumberOfLine, subjectsName);
 		termMark = getIntAndConvert(lex, physicalNumberOfLine, field);
@@ -96,6 +98,7 @@ std::pair<Lexer::LineType, int> Builder::parseLine(std::string& s, int physicalN
 		int notes_number_header = getIntAndConvert(lex, physicalNumberOfLine, field);
 		//if there is more fields in note than required
 		if (!lex.eof()) throw std::invalid_argument("103 " + std::to_string(physicalNumberOfLine) + " " + message103);
+		return { lnType, -1 };
 	}
 	else if (lnType == Lexer::LineType::Footer) {
 			int stateScaleMarks_sum_footer = getIntAndConvert(lex, physicalNumberOfLine, field);
@@ -103,6 +106,7 @@ std::pair<Lexer::LineType, int> Builder::parseLine(std::string& s, int physicalN
 			if (!stateScaleMarks_sum_footer == stateScaleMarks_sum) throw std::invalid_argument("202 " + std::to_string(physicalNumberOfLine) + " " + message202);
 			//if there is more fields in note than required
 			if (!lex.eof()) throw std::invalid_argument("203 " + std::to_string(physicalNumberOfLine) + " " + message203);
+			return { lnType, -1 };
 	}
 }
 

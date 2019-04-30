@@ -1,11 +1,9 @@
 #pragma once
 #include "info.h"
 #include "Lexer.h"
-#include <string>
+//#include <string>
 
 class Builder {
-public:
-	void loadData(Info&, const char* filename);
 private:
 	std::pair<Lexer::LineType, int> parseLine(std::string & s, int physicalNumberOfLine);
 	
@@ -16,7 +14,7 @@ private:
 	void getString(Lexer& lex, int numberOfString, std::string& field);
 	Lexer lex;
 	//fields from header and footer
-	int notes_number = 0;
+	int notes_number_header = 0;
 	int stateScaleMarks_sum = 0;
 	//indicators if header/footer/note row is already red
 	bool headerIsFound = false;
@@ -59,4 +57,6 @@ private:
 	const std::string message301 = "wrong numeration of notes";
 	const std::string message302 = "wrong number of fields in string";
 	const std::string message303 = "other error in string";
+public:
+	void loadData(Info&, const char* filename);
 };
