@@ -1,0 +1,8 @@
+header: 5
+1:	K-10:	Paul':			100:	5:	40:	12345678:	Bilinskyi:	Matan&adsa@':	60
+2:	K-10:	Paul':		0:		0:	0:	12345678:	Bilinskyi: 	Matan:	0
+3:	K-12:	Javier:			20:		-1:	0:	37962058:	McDormond:			Matan:	20
+4:	-KFG:	Ash:			66:		3:	26:	69501657:	Livyi:				Matan:	40 	
+5:	----:	Ernst:			75:		4:	35:	09876543:	Hemingway:			Matan:	40
+6:	1111:	Sing-Sing:		96:		5:	40:	00000000:	Surname-Surname:		Matan:	56
+footer:	-1
