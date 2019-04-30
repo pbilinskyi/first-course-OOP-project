@@ -7,14 +7,13 @@ class Builder {
 public:
 	void loadData(Info&, const char* filename);
 private:
-	std::pair<Lexer::LineType, int> parseLine(std::string & s);
+	std::pair<Lexer::LineType, int> parseLine(std::string & s, int physicalNumberOfLine);
 	
 	//this method is responsible for 303 erorr, (it handles errors, that can occur during the convertation)
 	//if next() returns false, throw i_a with message 302 (because next() returns false iff the end of the string is reached)
 	//if the convertation is failed, invalid_argument with diagnostical message is thrown
 	int getIntAndConvert(Lexer& lex, int numberOfString, std::string& s);
 	void getString(Lexer& lex, int numberOfString, std::string& field);
-
 	Lexer lex;
 	//fields from header and footer
 	int notes_number = 0;

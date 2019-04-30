@@ -1,3 +1,7 @@
-﻿  Info.cpp
-c:\users\paul white\source\repos\connecting\compiled_labwork\info.cpp(137): warning C4101: flag: неиспользованная локальная переменная
+﻿  builder.cpp
+c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(69): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  main.cpp
+  Создание кода...
+c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(118): warning C4715: Builder::getIntAndConvert: значение возвращается не при всех путях выполнения
+c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(76): warning C4715: Builder::parseLine: значение возвращается не при всех путях выполнения
   compiled_labwork.vcxproj -> C:\Users\Paul White\source\repos\connecting\Lab3, Stage 2\x64\Debug\compiled_labwork.exe
