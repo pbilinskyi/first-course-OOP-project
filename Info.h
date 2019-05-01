@@ -1,30 +1,12 @@
 #pragma once
 #include <string>
 
-/*class TestStudentResult {
-	void checkSuccesfulConstruction(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark){
-		try {
-			Info::Student::SubjectResult sr(name, summaryMark, termMark, examMark, stateScaleMark);
-
-		}
-		catch (std::invalid_argument &ia) {
-			std::cout << "Exception is thrown: " << ia.what() << std::endl;
-		}
-	}
-
-	//1. Test work of constructor for correct input data. 
-	//   Check if the agregated fields are changed.
-	//2. Test work of constructor for incorrect input data (there must be an exception).
-	//3. Test the comparison, using array of StudentResult.
-};*/
-
 class Info {
 private:
 	friend class TestStudentResult;
 	//=====================
 	class Student {
 	private:
-		//friend class TestStudentResult;
 		//====================
 		class SubjectResult {
 		private:
@@ -41,7 +23,7 @@ private:
 			bool isCorrectData(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark) const noexcept;
 			bool areConcerted(int stateScaleMark, int symmaryMark) const noexcept;
 		public:
-			SubjectResult(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark);
+			SubjectResult(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark);
 			std::string getName() const noexcept;
 			int getSummaryMark() const noexcept;
 			int getTermMark() const noexcept;
@@ -81,8 +63,8 @@ private:
 		bool isCorrectData(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode) const noexcept;
 	public:
 		SubjectResults subs;
-		Student(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode);
-		bool load(std::string& subjectName, int summaryMark, int termMark, int examMark, int stateScaleMark);
+		Student(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname);
+		void load(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark);
 		std::string getName() const noexcept;
 		std::string getSurname() const noexcept;
 		std::string getGradebookCode() const noexcept;
@@ -101,9 +83,10 @@ private:
 	int notesNumber;
 	int markSum;
 public:
-	bool load(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode);
-	bool load(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode,
-				std::string& subjectName, int summaryMark, int termMark, int examMark, int stateScaleMark);
+	void load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname);
+	void load(std::string& groupCode, std::string& name, int summaryMark, int stateScaleMark, 
+		int examMark, std::string& gradebookCode, std::string& surname,  
+				std::string& subjectName,  int termMark);
 	Students studs;
 
 	int getNotesNumber() const noexcept;

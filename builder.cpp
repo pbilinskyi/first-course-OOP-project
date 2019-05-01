@@ -15,7 +15,9 @@ void Builder::loadData(Info& inf, const char* filename) {
 	int notes_counter = 0;
 	int expectedNextNumber = 1;
 	notes_number_header = 1;
+	int headerNumberLine = 0;
 	while (getline(ifs, s)) {
+		++physicalNumberOfLine;
 		std::pair<Lexer::LineType, int> stringData = parseLine(s, physicalNumberOfLine);
 
 		switch (stringData.first)
@@ -24,28 +26,26 @@ void Builder::loadData(Info& inf, const char* filename) {
 			++notes_counter;
 			if ((!headerIsFound) || (footerIsFound)) throw std::invalid_argument("300 " + std::to_string(physicalNumberOfLine) + " " + message300);
 			if (stringData.second != expectedNextNumber) throw std::invalid_argument("301 " + std::to_string(physicalNumberOfLine) + " " + message301);
-			else expectedNextNumber++;
-			inf.load(studentsName, surname, groupCode, gradebookCode,
-				subjectsName, summaryMark, termMark, examMark, stateScaleMark);
+			expectedNextNumber++;
+			inf.load(groupCode, studentsName, summaryMark, stateScaleMark, examMark, gradebookCode,
+				 surname, subjectsName, termMark);
 			break;
 		
 		case Lexer::LineType::Header:
-			++notes_counter;
-			if (headerIsFound) throw std::invalid_argument("101 " + std::to_string(physicalNumberOfLine) + " " + message101);
+			headerNumberLine = physicalNumberOfLine;
+			if (headerIsFound) throw std::invalid_argument("101 " + std::to_string(headerNumberLine) + " " + message101);
 			else headerIsFound = true;
-			if (notes_number_header != notes_counter) throw std::invalid_argument("102 " + std::to_string(physicalNumberOfLine) + " " + message102);
 			break;
 		case Lexer::LineType::Footer:
-			++notes_counter;
 			if (footerIsFound) throw std::invalid_argument("201 " + std::to_string(physicalNumberOfLine) + " " + message201);
 			else footerIsFound = true; 
 			break;
 		default:
 			break;
 		}
-
-		++physicalNumberOfLine;
 	}
+
+	if (notes_number_header != notes_counter) throw std::invalid_argument("102 -1 " + message102);
 
 	if (!headerIsFound) throw std::invalid_argument("100 " + std::to_string(physicalNumberOfLine) + " " + message100);
 	if (!footerIsFound) throw std::invalid_argument("300 " + std::to_string(physicalNumberOfLine) + " " + message300);
@@ -103,7 +103,7 @@ std::pair<Lexer::LineType, int> Builder::parseLine(std::string& s, int physicalN
 	else if (lnType == Lexer::LineType::Footer) {
 			int stateScaleMarks_sum_footer = getIntAndConvert(lex, physicalNumberOfLine, field);
 			
-			if (!stateScaleMarks_sum_footer == stateScaleMarks_sum) throw std::invalid_argument("202 " + std::to_string(physicalNumberOfLine) + " " + message202);
+			if (!stateScaleMarks_sum_footer == stateScaleMarks_sum) throw std::invalid_argument("202 -1 " + message202);
 			//if there is more fields in note than required
 			if (!lex.eof()) throw std::invalid_argument("203 " + std::to_string(physicalNumberOfLine) + " " + message203);
 			return { lnType, -1 };

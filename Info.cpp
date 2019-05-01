@@ -2,31 +2,25 @@
 #include <iostream>
 #include "ctype.h"
 
-bool Info::load(std::string & name, std::string & surname, std::string & groupCode, std::string & gradebookCode)
+void Info::load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
 {
-	Student st(name, surname, groupCode, gradebookCode);
+	Student st(groupCode, name, gradebookCode, surname);
 	/*
 	...object is loading into Students container...
 	*/
-	return true;
 }
 
-bool Info::load(std::string & name, std::string & surname, std::string & groupCode, std::string & gradebookCode, std::string & subjectName, int summaryMark, int termMark, int examMark, int stateScaleMark)
+void Info::load(std::string& groupCode, std::string& name, int summaryMark, int stateScaleMark,
+	int examMark, std::string& gradebookCode, std::string& surname,
+	std::string& subjectName, int termMark)
 {
-	bool flag = false;
-	try {
-		Student st(name, surname, groupCode, gradebookCode);
-		st.load(subjectName, summaryMark, termMark, examMark, stateScaleMark);
-		/*
+	Student st(groupCode, name, gradebookCode, surname);
+	st.load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
+	/*
 		Student is adding into Students container...
-		*/
-		std::cout << "Loading into Students container is succesful. New student: " << st.getName() << std::endl;
-		flag = true;
-	}
-	catch (std::invalid_argument &ia) {
-		std::cout << "Loading into Students container is failed. Error: " << ia.what() << std::endl;
-	}
-	return flag;
+	*/
+	//std::cout << "Loading "<< name <<" : OK" << std::endl;
+	
 }
 
 int Info::getNotesNumber() const noexcept
@@ -64,13 +58,13 @@ bool Info::Student::SubjectResult::isValidSubjectName(std::string & name) const 
 
 bool Info::Student::SubjectResult::isCorrectData(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark) const noexcept
 {
-	bool flag;
-	flag = (stateScaleMark >= -1) && (stateScaleMark <= 5) && (stateScaleMark != 1);
-	flag = areConcerted(stateScaleMark, summaryMark);
-	flag = (termMark <= 60) && (termMark >= 0);
-	flag = ((examMark <= 40) && (examMark >= 24))||(examMark == 0);
-	flag = (summaryMark == (termMark + examMark));
-	flag = isValidSubjectName(name);
+	bool flag = true;
+	if (!((stateScaleMark >= -1) && (stateScaleMark <= 5) && (stateScaleMark != 1))) flag = false;
+	if (!areConcerted(stateScaleMark, summaryMark)) flag = false;
+	if (!((termMark <= 60) && (termMark >= 0))) flag = false;
+	if (!(((examMark <= 40) && (examMark >= 24)) || (examMark == 0))) flag = false;
+	if (summaryMark != (termMark + examMark)) flag = false;
+	if (!isValidSubjectName(name)) flag = false;
 
 	return flag;
 }
@@ -93,16 +87,17 @@ bool Info::Student::SubjectResult::areConcerted(int stateScaleMark, int summaryM
 	return flag;
 }
 
-Info::Student::SubjectResult::SubjectResult(std::string& name, int summaryMark, int termMark, int examMark, int stateScaleMark)
+Info::Student::SubjectResult::SubjectResult(int summaryMark, int stateScaleMark, int examMark, std::string& name, int termMark)
 {
-	if (!isCorrectData(name, summaryMark, termMark, examMark, stateScaleMark)) throw std::invalid_argument("input data is incorrect");
+	if (!isCorrectData(name, summaryMark, termMark, examMark, stateScaleMark))
+			throw std::invalid_argument("Error while loading subjects result: input data doesn't satisfy the restrictions.");
 	this->name = name;
 	this->summaryMark = summaryMark;
 	this->termMark = termMark;
 	this->examMark = examMark;
 	this->stateScaleMark = stateScaleMark;
 	
-	std::cout << "SubjectResult " + this->name + " is created."<< std::endl;
+	//std::cout << "SubjectResult " + this->name + " is created."<< std::endl;
 }
 
 std::string Info::Student::SubjectResult::getName() const noexcept
@@ -215,33 +210,26 @@ void Info::Student::modifyStability(int summaryMark) noexcept
 }
 
 //if input data is incorrect, throw invalid_argument
-Info::Student::Student(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode)
+Info::Student::Student(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
 {
-	if (!(isCorrectData(name, surname, groupCode, gradebookCode))) throw std::invalid_argument("input data dont hold the requirements");
+	if (!(isCorrectData(name, surname, groupCode, gradebookCode))) throw std::invalid_argument("Error while loading student: input data doesn't satisfy the restrictions");
 	this->name = name;
 	this->surname = surname;
 	this->groupCode = groupCode;
 	this->gradebookCode = gradebookCode;
 }
 
-bool Info::Student::load(std::string & subjectName, int summaryMark, int termMark, int examMark, int stateScaleMark)
+void Info::Student::load(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark)
 {
-	bool flag = false;
-	try {
-		int old_size = subs.size();
-		SubjectResult sr(subjectName, summaryMark, termMark, examMark, stateScaleMark);
-		/*
+	int old_size = subs.size();
+	SubjectResult sr(summaryMark,  stateScaleMark, examMark,  subjectName, termMark);
+	/*
 		...object is loading into container SubjectResults...
-		*/
-		modifyStability(summaryMark);
-		modifyRating(summaryMark, old_size);
-		std::cout << "Agregated field \"stability\" was modified. Now: " << stability << std::endl;
-		std::cout << "New object was succesfully loaded into StudentResults container" << std::endl;
-	}
-	catch (std::invalid_argument &ia) {
-		std::cout << "SubjectResult object loading failed: " << ia.what() << std::endl;
-	}
-	return flag;
+	*/
+	modifyStability(summaryMark);
+	modifyRating(summaryMark, old_size);
+	//std::cout << "Agregated field \"stability\" was modified. Now: " << stability << std::endl;
+	//std::cout << "New object was succesfully loaded into StudentResults container" << std::endl;
 }
 
 std::string Info::Student::getName() const noexcept
