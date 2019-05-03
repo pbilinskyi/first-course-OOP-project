@@ -15,6 +15,7 @@ private:
 	Lexer lex;
 	//fields from header and footer
 	int notes_number_header = 0;
+	int state_scale_mark_sum_footer = 0;
 	int stateScaleMarks_sum = 0;
 	//indicators if header/footer/note row is already red
 	bool headerIsFound = false;

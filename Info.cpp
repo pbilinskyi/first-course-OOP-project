@@ -42,7 +42,7 @@ bool Info::Student::SubjectResult::isMarkOfNotAllowed(int summaryMark) const noe
 bool Info::Student::SubjectResult::isMarkOfUpsent(int summaryMark) const noexcept
 {
  	//we consider that if student was upsent, his mark is 0
-	return (summaryMark >= 36)&&(summaryMark <= 60);
+	return (summaryMark >= 0)&&(summaryMark <= 60);
 }
 
 bool Info::Student::SubjectResult::isValidSubjectName(std::string & name) const noexcept

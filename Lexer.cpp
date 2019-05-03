@@ -1,82 +1,51 @@
 //Pavlo Bilinskyi
 #include "Lexer.h"
 #include <string>
+#include <cctype>
 #include <iostream>
-#include <regex>
 
-Lexer::LineType Lexer::load(std::string source) {
+Lexer::LineType Lexer::load(const std::string& source) {
+	s = source;
+	pos_ = START_POSITION;
+	len = s.length();
+	std::string first;
 
-	if (source.length() > 0) {
-		s = source;
-		len = s.length();
-		pos_ = 0;
+	next(first);
+	if (first.compare("header") == 0) {
+		typeOfLoadedString = Lexer::LineType::Header;
+		return Lexer::LineType::Header;
+	}
+	if (first.compare("footer") == 0) {
+		typeOfLoadedString = Lexer::LineType::Footer;
+		return Lexer::LineType::Footer;
+	}
 
-		std::string firstLetters = s.substr(0, 6);
-		if (firstLetters.compare("header") == 0) {
-			typeOfLoadedString = LineType::Header;
-			this->next(source);
-		}
-
-		else if (firstLetters.compare("footer") == 0) {
-			typeOfLoadedString = LineType::Footer;
-			this->next(source);
-		}
-		else typeOfLoadedString = LineType::Line;
-		
-		size_t i = 0;
-		bool isEmpty = true;
-		while (i < len) {
-			if ((!isWhitespace(s[i])) && (!eof())) isEmpty = false;
-			++i;
-		}
-		if (isEmpty) typeOfLoadedString = LineType::Empty;
+	pos_ = START_POSITION;
+	if (first.empty() && (!eof())) {
+		typeOfLoadedString = Lexer::LineType::Empty;
+		return Lexer::LineType::Empty;
 	}
 	else {
-		typeOfLoadedString = LineType::Empty;
+		typeOfLoadedString = Lexer::LineType::Line;
+		return Lexer::LineType::Line;
 	}
-
-	return typeOfLoadedString;
 }
 
 bool Lexer::next(std::string &field) {
-	bool isSuccesful = false;
-
-//empty string contains 1 empty field []
-//this block must match the field [] of empty string only once
-	if ((typeOfLoadedString == LineType::Empty)&&(pos_==len)) {
-		field = "";
-		isSuccesful = true;
-		++pos_;
-	}
-		
-//there is one empty field [] between last delimiter and the end of the string
-	else if ((pos_ == len) && (isDelimiter(s[pos_ - 1]))) {
-		field = "";
-		isSuccesful = true;
-		++pos_;
-	}
+	bool flag = true;
+	field.clear();
 
 	if (!eof()) {
-		size_t fieldEnd = pos_;
-		size_t whitespaceCount = 0;
-		while ((!isDelimiter(s[fieldEnd])) && (fieldEnd < len)) {
-			if (isWhitespace(s[fieldEnd])) ++whitespaceCount;
-			++fieldEnd;
+		pos_++;
+		while ((!isDelimiter(s[pos_])) && (!eof())) {
+			if (!std::isspace(s[pos_]))	field += s[pos_];
+			pos_++;
 		}
-
-		field = std::string(fieldEnd - pos_ - whitespaceCount, ' ');
-		size_t tempNextPos = 0;
-		while (pos_ < fieldEnd) {
-			if (!isWhitespace(s[pos_])) {
-				field[tempNextPos] = s[pos_];
-				++tempNextPos;
-			}
-			++pos_;
-		}
-		isSuccesful = true;
-		++pos_;
 	}
-	return isSuccesful;
+	else if (s.empty() && (pos_ == START_POSITION)) { pos_++; }
+	else flag = false;
+	
+	return flag;
 }
 
 bool Lexer::eof() const noexcept {
@@ -84,41 +53,11 @@ bool Lexer::eof() const noexcept {
 }
 
 bool Lexer::isDelimiter(char c) const noexcept{
-	bool isDelimiter = false;
-	if (delimiters) {
-		size_t i = 0;
-		while ((!isDelimiter) && (i < nDelim_)) {
-			if (delimiters[i] == c) isDelimiter = true;
-			++i;
-		}
-	}
-	return isDelimiter;
-}
-
-bool Lexer::isWhitespace(char c) const noexcept
-{
-	return ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r') || (c == '\v'));
+	
+	return ((c == ':')||(c == '/'));
 }
 
 Lexer::LineType Lexer::getLineType() const noexcept
 {
 	return typeOfLoadedString;
-}
-
-/*const char* Lexer::getTypeOfLine() const noexcept
-{
-	switch (typeOfLoadedString)
-	{
-		case LineType::Line:    return "Line";
-		case LineType::Empty:   return "Empty";
-		case LineType::Header:  return "Header";
-		case LineType::Footer:  return "Footer";
-		default:      return "Undefined";
-	}
-}
-*/
-
-Lexer::~Lexer()
-{
-	delete[] delimiters;
 }
