@@ -1,13 +1,12 @@
 #pragma once
 #include <string>
+#include "StackTemplate.h"
 
 class Info {
 private:
-	friend class TestStudentResult;
 	//=====================
 	class Student {
 	private:
-		//====================
 		class SubjectResult {
 		private:
 			std::string name;
@@ -36,16 +35,11 @@ private:
 			bool operator<=(SubjectResult&) const;
 		};
 		//====================
-		class SubjectResults {
-		public: 
-			int size();
-		};
-		//====================
 		std::string name;
 		std::string surname;
 		std::string gradebookCode;
 		std::string groupCode;
-		//additional feilds that help to change the stability in a correct and clear way
+		//additional fields that help to change the stability in a correct and clear way
 		static const int MAX_RESULT = 100;
 		static const int MIN_RESULT = 0;
 		static const int UNDEFINED = -1;
@@ -62,8 +56,18 @@ private:
 		bool hasValidNameSymbols(std::string&) const noexcept;
 		bool isCorrectData(std::string& name, std::string& surname, std::string& groupCode, std::string& gradebookCode) const noexcept;
 	public:
+		using SubjectResults = Stack<SubjectResult>;
 		SubjectResults subs;
+
 		Student(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname);
+		Student() = default;
+		/*Student(const Student&);
+		Student(Student&&) = default;
+		Student& operator=(const Student&) = default;
+		Student& operator=(Student&&) = default;
+		~Student() = default;
+		*/
+
 		void load(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark);
 		std::string getName() const noexcept;
 		std::string getSurname() const noexcept;
@@ -76,20 +80,13 @@ private:
 		bool operator>=(Student&) const;
 		bool operator<=(Student&) const;
 	};
-	class Students {
-	public:
-		int size();
-	};
-	int notesNumber;
-	int markSum;
 public:
 	void load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname);
 	void load(std::string& groupCode, std::string& name, int summaryMark, int stateScaleMark, 
 		int examMark, std::string& gradebookCode, std::string& surname,  
 				std::string& subjectName,  int termMark);
+	
+	using Students = Stack<Student>;
 	Students studs;
-
-	int getNotesNumber() const noexcept;
-	int getMarkSum() const noexcept;
 };
 

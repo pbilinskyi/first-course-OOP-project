@@ -1,12 +1,23 @@
 ﻿  Info.cpp
-c:\users\paul white\source\repos\connecting\compiled_labwork\info.cpp(136): warning C4101: flag: неиспользованная локальная переменная
-  Lexer.cpp
-c:\users\paul white\source\repos\connecting\compiled_labwork\lexer.cpp(10): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-  builder.cpp
-c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(35): warning C4101: ia: неиспользованная локальная переменная
-  lowLevelFunc.cpp
+c:\users\paul white\source\repos\connecting\compiled_labwork\info.cpp(205): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+c:\users\paul white\source\repos\connecting\compiled_labwork\stacktemplate.h(75): error C2440: инициализация: невозможно преобразовать "initializer list" в "Stack<Info::Student>::Node"
+  c:\users\paul white\source\repos\connecting\compiled_labwork\stacktemplate.h(75): note: Недопустимая агрегатная инициализация
+  c:\users\paul white\source\repos\connecting\compiled_labwork\stacktemplate.h(84): note: выполняется компиляция ссылки на экземпляр шаблон функции "void Stack<Info::Student>::push_<Info::Student>(T1 &&)"
+          with
+          [
+              T1=Info::Student
+          ]
+  c:\users\paul white\source\repos\connecting\compiled_labwork\stacktemplate.h(84): note: выполняется компиляция ссылки на экземпляр шаблон функции "void Stack<Info::Student>::push_<Info::Student>(T1 &&)"
+          with
+          [
+              T1=Info::Student
+          ]
+  c:\users\paul white\source\repos\connecting\compiled_labwork\stacktemplate.h(83): note: при компиляции функции-члена "<Нет данных>" класса класс <Нет данных>
+  c:\users\paul white\source\repos\connecting\compiled_labwork\info.cpp(8): note: выполняется компиляция ссылки на экземпляр шаблон функции "void Stack<Info::Student>::push(T &&)"
+          with
+          [
+              T=Info::Student
+          ]
+  c:\users\paul white\source\repos\connecting\compiled_labwork\info.h(90): note: выполняется компиляция ссылки на экземпляр шаблон класс "Stack<Info::Student>"
   main.cpp
   Создание кода...
-c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(109): warning C4715: Builder::parseLine: значение возвращается не при всех путях выполнения
-c:\users\paul white\source\repos\connecting\compiled_labwork\builder.cpp(154): warning C4715: Builder::getIntAndConvert: значение возвращается не при всех путях выполнения
-  compiled_labwork.vcxproj -> C:\Users\Paul White\source\repos\connecting\Lab3, Stage 2\x64\Debug\compiled_labwork.exe

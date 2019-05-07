@@ -4,33 +4,15 @@
 
 void Info::load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
 {
-	Student st(groupCode, name, gradebookCode, surname);
-	/*
-	...object is loading into Students container...
-	*/
+	//Student st(groupCode, name, gradebookCode, surname);
+	studs.push(Student(groupCode, name, gradebookCode, surname));
 }
 
 void Info::load(std::string& groupCode, std::string& name, int summaryMark, int stateScaleMark,
 	int examMark, std::string& gradebookCode, std::string& surname,
 	std::string& subjectName, int termMark)
 {
-	Student st(groupCode, name, gradebookCode, surname);
-	st.load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
-	/*
-		Student is adding into Students container...
-	*/
-	//std::cout << "Loading "<< name <<" : OK" << std::endl;
-	
-}
-
-int Info::getNotesNumber() const noexcept
-{
-	return notesNumber;
-}
-
-int Info::getMarkSum() const noexcept
-{
-	return markSum;
+	studs.find(gradebookCode).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
 }
 
 bool Info::Student::SubjectResult::isMarkOfNotAllowed(int summaryMark) const noexcept
@@ -133,7 +115,6 @@ bool Info::Student::SubjectResult::operator==(SubjectResult &other) const
 
 bool Info::Student::SubjectResult::operator>(SubjectResult &other) const
 {
-	bool flag;
 	return ((this->summaryMark > other.summaryMark) || ((this->summaryMark == other.summaryMark) && (this->name.compare(other.name) > 0)));
 }
 
@@ -289,15 +270,4 @@ bool Info::Student::operator<=(Student &other) const
 	return ((this->getRating() < other.getRating()) ||
 		((this->getRating() == other.getRating()) && (this->getGradebookCode().compare(other.getGradebookCode()) <= 0)));
 
-}
-
-
-int Info::Student::SubjectResults::size()
-{
-	return 1;
-}
-
-int Info::Students::size()
-{
-	return 1;
 }

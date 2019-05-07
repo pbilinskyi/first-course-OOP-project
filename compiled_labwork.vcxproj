@@ -126,6 +126,7 @@
     <ClInclude Include="Info.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="lowLevelFunc.h" />
+    <ClInclude Include="StackTemplate.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="correctInput.txt" />
