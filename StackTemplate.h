@@ -5,10 +5,10 @@ template <class T> class Stack{
 public:
 	using sizetype = size_t;
 	Stack() = default;
-	Stack(const Stack&) = delete;
-	Stack(Stack&&) = delete;
-	Stack& operator=(const Stack&) = delete;
-	Stack& operator=(Stack&&) = delete;
+	Stack(const Stack&) = default;
+	Stack(Stack&&) = default;
+	Stack& operator=(const Stack&) = default;
+	Stack& operator=(Stack&&) = default;
 	~Stack();
 
 	void push(const T&);
@@ -16,13 +16,14 @@ public:
 	void pop() noexcept;
 	const T& top() const;
 	T&	top();
-	template<class Identificator> const T& find(Identificator&) const;
-	template<class Identificator> T& find(Identificator&);
-
 	//delegator to sort_
 	void sort();
 
-	void print() const;
+	//throw out_of_range, if stack doesn't contain equal element
+	//const T& find(T&) const;
+	T& find(const T& elem);
+
+	void print();
 	sizetype size() const noexcept;
 	bool empty() const noexcept;
 	void clear();
@@ -30,16 +31,48 @@ public:
 private:
 	struct Node {
 		T data;
-		Node* next = nullptr;
-		Node* prev = nullptr;
+		Node* next;
+		Node* prev;
 	};
 	sizetype counter = 0;
 	Node* head = nullptr;
-	template <class T1> void push_(T1&&);
 
+	template <class T1> void push_(T1&&);
 	Node* getMiddleNode(Node*) const;
 	Node* merge(Node* biggerHead, Node* smallerHead) const;
 	Node* sort_(Node* head) const;
+
+public:
+	class BaseIterator {
+	public:
+		BaseIterator(Node* cur = nullptr);
+		BaseIterator& operator++(); //move to the next node if it exists; else nothing
+		bool operator==(BaseIterator& other) const; //if this or other iterator is at the nullptr position, throw invlid_argument 
+		bool operator!=(BaseIterator&) const;		//if this or other iterator is at the nullptr position, throw invlid_argument 
+	protected:
+		Node *current;
+	};
+
+	class ConstIterator : public BaseIterator {
+	public:
+		using BaseIterator::BaseIterator;
+		const T& operator*() const;
+		ConstIterator& operator++();
+	};
+	class Iterator : public BaseIterator {
+	public:
+		using BaseIterator::BaseIterator;
+		T& operator*() const;
+		Iterator& operator++();
+	};
+
+	ConstIterator begin() const noexcept;
+	Iterator begin() noexcept;
+	ConstIterator end() const noexcept;
+	Iterator end() noexcept;
+
+	void print_(Iterator begin, Iterator end);
+	template <class T1>	auto find_(const T& elem, T1&& st);
 };
 
 template<class T> void Stack<T>::clear() {
@@ -62,20 +95,22 @@ template<class T> typename Stack<T>::sizetype Stack<T>::size() const noexcept{
 }
 
 //pre: T must override operator string
-template<class T> void Stack<T>::print() const{
-	Node *temp = head;
-	while (temp) {
-		std::cout << temp->data << " ";
-		temp = temp->next;
-	}
+template<class T> void Stack<T>::print() {
+	print_(begin(), end());
 }
 
 template<class T> template <class T1> void Stack<T>::push_(T1&& elem) {
-	
 	Node* newNode = new Node{ std::forward<T1>(elem), head, nullptr};
 	if (head) head->prev = newNode;
 	head = newNode;
 	++counter;
+}
+
+template<class T> inline void Stack<T>::print_(Iterator begin, Iterator end)
+{
+	for (auto i = begin; i != end; ++i) {
+		std::cout << std::string(*i) << std::endl;
+	}
 }
 template<class T> void Stack<T>::push(const T& elem) {
 	push_(elem);
@@ -108,6 +143,12 @@ template <class T> T& Stack<T>::top() {
 
 template <class T> void Stack<T>::sort() {
 	head = sort_(head);
+}
+
+template<class T> T& Stack<T>::find(const T& elem){
+	
+	auto i = find_(elem, *this);
+	return *i;
 }
 
 template <class T> typename Stack<T>::Node* Stack<T>::sort_(Node* head) const{
@@ -175,13 +216,63 @@ template <class T> typename Stack<T>::Node* Stack<T>::merge(Node* biggerHead, No
 	return result;
 }
 
-template<class T> template<class Identificator> const T& Stack<T>::find(Identificator& field) const {
-	//plug
-	return top();
+template<class T> typename Stack<T>::ConstIterator Stack<T>::begin() const noexcept { return ConstIterator(head); }
+template<class T> typename Stack<T>::Iterator Stack<T>::begin() noexcept { return Iterator(head); }
+template<class T> typename Stack<T>::ConstIterator Stack<T>::end() const noexcept { return ConstIterator(nullptr); }
+template<class T> typename Stack<T>::Iterator Stack<T>::end() noexcept { return Iterator(nullptr); }
+
+template<class T> template <class T1>
+inline auto Stack<T>::find_(const T& elem, T1&& st)
+{
+	auto i = st.begin();
+	auto end = st.end();
+	while ((i != end) && (*i != elem)) ++i;
+	return i;
 }
 
-template<class T> template<class Identificator> T& Stack<T>::find(Identificator& field){
-	//plug
-	return top();
+//stack::BaseIterator
+template <class T>  Stack<T>::BaseIterator::BaseIterator(Node* cur) : current (cur) {}
+template <class T> typename Stack<T>::BaseIterator& Stack<T>::BaseIterator::operator++(){
+	if (current)	current = current->next;
+	return *this;
 }
 
+template <class T> bool Stack<T>::BaseIterator::operator==(BaseIterator& other) const{
+	//if ((!other.current) || (!this->current)) return 
+	return (this->current == other->current);
+}
+
+template <class T> bool Stack<T>::BaseIterator::operator!=(BaseIterator& other) const{	
+	return (this->current != other.current);
+}
+
+//Stack::ConstIterator
+template<class T>
+inline const T & Stack<T>::ConstIterator::operator*() const
+{
+	if (BaseIterator::current) return BaseIterator::current->data;
+	else throw std::out_of_range("iterator at the nullptr position");
+}
+
+template<class T>
+inline typename Stack<T>::ConstIterator& Stack<T>::ConstIterator::operator++()
+{
+	BaseIterator::operator++();
+	return *this;
+}
+
+
+//Stack::Iterator
+template<class T>
+inline T & Stack<T>::Iterator::operator*() const
+{
+	if (BaseIterator::current) return BaseIterator::current->data;
+	else throw std::out_of_range("iterator at the nullptr position");
+}
+
+template<class T>
+inline typename Stack<T>::Iterator& Stack<T>::Iterator::operator++()
+{
+	BaseIterator::operator++();
+	return *this;
+}

@@ -23,6 +23,13 @@ private:
 			bool areConcerted(int stateScaleMark, int symmaryMark) const noexcept;
 		public:
 			SubjectResult(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark);
+			//copying and moving
+			//SubjectResult(const SubjectResult&) = default;
+			//SubjectResult(SubjectResult&&) = default;
+			//SubjectResult& operator=(const SubjectResult&) = default;
+			//SubjectResult& operator=(SubjectResult&&) = default;
+			//~SubjectResult() = default;
+			//
 			std::string getName() const noexcept;
 			int getSummaryMark() const noexcept;
 			int getTermMark() const noexcept;
@@ -74,11 +81,13 @@ private:
 		std::string getGradebookCode() const noexcept;
 		int getStability() const noexcept;
 		int getRating() const noexcept;
-		bool operator==(Student&) const;
+		bool operator==(const Student&);
+		bool operator!=(const Student&);
 		bool operator>(Student&) const;
 		bool operator<(Student&) const;
 		bool operator>=(Student&) const;
 		bool operator<=(Student&) const;
+		operator std::string() const;
 	};
 public:
 	void load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname);

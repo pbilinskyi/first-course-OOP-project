@@ -1,5 +1,6 @@
 #include "Info.h"
 #include <iostream>
+#include <stdexcept>
 #include "ctype.h"
 
 void Info::load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
@@ -12,7 +13,17 @@ void Info::load(std::string& groupCode, std::string& name, int summaryMark, int 
 	int examMark, std::string& gradebookCode, std::string& surname,
 	std::string& subjectName, int termMark)
 {
-	studs.find(gradebookCode).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
+	//studs.push(Student(groupCode, name, gradebookCode, surname));
+	//studs.top().load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
+	Student st(groupCode, name, gradebookCode, surname);
+	try {
+		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
+	}
+	catch (std::out_of_range) {
+		load(groupCode, name, gradebookCode, surname);
+		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
+		studs.print();
+	}
 }
 
 bool Info::Student::SubjectResult::isMarkOfNotAllowed(int summaryMark) const noexcept
@@ -240,9 +251,14 @@ int Info::Student::getRating() const noexcept
 	return rating;
 }
 
-bool Info::Student::operator==(Student &other) const
+bool Info::Student::operator==(const Student &other) 
 {
 	return (this->getRating() == other.getRating())&&(this->getGradebookCode().compare(other.getGradebookCode()) == 0);
+}
+
+bool Info::Student::operator!=(const Student &other) 
+{
+	return !(*this == other);
 }
 
 bool Info::Student::operator>(Student &other) const
@@ -270,4 +286,9 @@ bool Info::Student::operator<=(Student &other) const
 	return ((this->getRating() < other.getRating()) ||
 		((this->getRating() == other.getRating()) && (this->getGradebookCode().compare(other.getGradebookCode()) <= 0)));
 
+}
+
+Info::Student::operator std::string() const
+{
+	return name;
 }
