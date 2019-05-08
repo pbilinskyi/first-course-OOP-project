@@ -72,7 +72,7 @@ void unknownCommandMessage(const char* command) {
 }
 
 void notEnoughArguments(const char* command) {
-	std::cout <<"output undefined" << std::endl;
+	std::cout <<++command <<" undefined" << std::endl;
 }
 
 int main(int argc, char** argv) {
