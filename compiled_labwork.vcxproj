@@ -125,11 +125,11 @@
     <ClInclude Include="builder.h" />
     <ClInclude Include="Info.h" />
     <ClInclude Include="Lexer.h" />
-    <ClInclude Include="lowLevelFunc.h" />
+    <ClInclude Include="writersInStream.h" />
     <ClInclude Include="StackTemplate.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="correctInput.txt" />
+    <Text Include="correct_input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

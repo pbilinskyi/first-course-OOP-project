@@ -43,7 +43,7 @@ private:
 	Node* sort_(Node* head) const;
 
 public:
-	class BaseIterator {
+	/*class BaseIterator {
 	public:
 		BaseIterator(Node* cur = nullptr);
 		BaseIterator& operator++(); //move to the next node if it exists; else nothing
@@ -58,21 +58,25 @@ public:
 		using BaseIterator::BaseIterator;
 		const T& operator*() const;
 		ConstIterator& operator++();
-	};
-	class Iterator : public BaseIterator {
+	};*/
+	class Iterator{
 	public:
-		using BaseIterator::BaseIterator;
+		Iterator(Node* cur = nullptr);
 		T& operator*() const;
-		Iterator& operator++();
+		Iterator& operator++(); //move to the next node if it exists; else nothing
+		bool operator==(Iterator& other) const; //if this or other iterator is at the nullptr position, throw invlid_argument 
+		bool operator!=(Iterator&) const;		//if this or other iterator is at the nullptr position, throw invlid_argument 
+	private:
+		Node *current;
 	};
 
-	ConstIterator begin() const noexcept;
+	//ConstIterator begin() const noexcept;
 	Iterator begin() noexcept;
-	ConstIterator end() const noexcept;
+	//ConstIterator end() const noexcept;
 	Iterator end() noexcept;
 
 	void print_(Iterator begin, Iterator end);
-	template <class T1>	auto find_(const T& elem, T1&& st);
+	Iterator find_(const T& elem, Stack<T>& st);
 };
 
 template<class T> void Stack<T>::clear() {
@@ -147,7 +151,7 @@ template <class T> void Stack<T>::sort() {
 
 template<class T> T& Stack<T>::find(const T& elem){
 	
-	auto i = find_(elem, *this);
+	Iterator i = find_(elem, *this);
 	return *i;
 }
 
@@ -216,37 +220,36 @@ template <class T> typename Stack<T>::Node* Stack<T>::merge(Node* biggerHead, No
 	return result;
 }
 
-template<class T> typename Stack<T>::ConstIterator Stack<T>::begin() const noexcept { return ConstIterator(head); }
+//template<class T> typename Stack<T>::ConstIterator Stack<T>::begin() const noexcept { return ConstIterator(head); }
 template<class T> typename Stack<T>::Iterator Stack<T>::begin() noexcept { return Iterator(head); }
-template<class T> typename Stack<T>::ConstIterator Stack<T>::end() const noexcept { return ConstIterator(nullptr); }
+//template<class T> typename Stack<T>::ConstIterator Stack<T>::end() const noexcept { return ConstIterator(nullptr); }
 template<class T> typename Stack<T>::Iterator Stack<T>::end() noexcept { return Iterator(nullptr); }
 
-template<class T> template <class T1>
-inline auto Stack<T>::find_(const T& elem, T1&& st)
+template<class T> typename Stack<T>::Iterator Stack<T>::find_(const T& elem, Stack<T>& st)
 {
-	auto i = st.begin();
-	auto end = st.end();
+	Iterator i = st.begin();
+	Iterator end = st.end();
 	while ((i != end) && (*i != elem)) ++i;
 	return i;
 }
 
-//stack::BaseIterator
-template <class T>  Stack<T>::BaseIterator::BaseIterator(Node* cur) : current (cur) {}
-template <class T> typename Stack<T>::BaseIterator& Stack<T>::BaseIterator::operator++(){
-	if (current)	current = current->next;
+//stack::Iterator
+template <class T> Stack<T>::Iterator::Iterator(Node* cur) : current (cur) {}
+template <class T> typename  Stack<T>::Iterator& Stack<T>::Iterator::operator++(){
+	if (current) current = current->next;
 	return *this;
 }
 
-template <class T> bool Stack<T>::BaseIterator::operator==(BaseIterator& other) const{
+template <class T> bool Stack<T>::Iterator::operator==(Iterator& other) const{
 	//if ((!other.current) || (!this->current)) return 
 	return (this->current == other->current);
 }
 
-template <class T> bool Stack<T>::BaseIterator::operator!=(BaseIterator& other) const{	
+template <class T> bool Stack<T>::Iterator::operator!=(Iterator& other) const{	
 	return (this->current != other.current);
 }
 
-//Stack::ConstIterator
+/*Stack::ConstIterator
 template<class T>
 inline const T & Stack<T>::ConstIterator::operator*() const
 {
@@ -260,19 +263,19 @@ inline typename Stack<T>::ConstIterator& Stack<T>::ConstIterator::operator++()
 	BaseIterator::operator++();
 	return *this;
 }
-
+*/
 
 //Stack::Iterator
 template<class T>
 inline T & Stack<T>::Iterator::operator*() const
 {
-	if (BaseIterator::current) return BaseIterator::current->data;
+	if (current) return current->data;
 	else throw std::out_of_range("iterator at the nullptr position");
 }
 
-template<class T>
+/*template<class T>
 inline typename Stack<T>::Iterator& Stack<T>::Iterator::operator++()
 {
 	BaseIterator::operator++();
 	return *this;
-}
+}*/

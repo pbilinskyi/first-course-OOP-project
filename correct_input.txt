@@ -1,8 +1,9 @@
-header	:	6
-1:	K-10:	Paul':			100:		5:	40:	12345678:	Bilinskyi:			Matan:	60
-2:	K-10:	Paul':			36:		0:	0:	12345678:	Bilinskyi: 			Matan:	36
-3:	K-12:	Javier:			20:		-1:	0:	37962058:	McDormond:			Linear Algebra:	20
-4:	K-13:	Ash:			66:		3:	26:	69501657:	Smith:				Matan:	40	
-5:	K-21:	Ernst:			75:		4:	35:	09876543:	Hemingway:			Matan:	40
-6:	K-22:	Sing-Sing:		96:		5:	40:	00000000:	Surname:			Matan:	56
-footer	:	16
+header	:	7
+1:	K-10:	Paul:			100:		5:	40:	12345678:	Bilinskyi:			Matan:					60
+2:	K-10:	Paul:			100:		5:	40:	12345678:	Bilinskyi: 			Linear Algebra:			60
+3:	K-10:	Paul:			90:			5:	32:	12345678:	Bilinskyi: 			Discrete Mathematics:	58
+4:	K-10:	Paul:			80:			4:	40:	12345678:	Bilinskyi: 			VDUS:					40
+5:	K-10:	Paul:			55:			2:	25:	12345678:	Bilinskyi: 			Programming:			30
+6:	K-10:	Alex:			75:			4:	25: 11111111:	Stoyan:				Matan:					50
+7:	K-10:	Alex:			80:			4:	25: 11111111:	Stoyan:				Linear Algebra:			55
+footer	:	29

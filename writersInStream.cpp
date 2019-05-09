@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ostream>
 #include "Info.h"
-#include "lowLevelFunc.h"
+#include "writersInStream.h"
 
 void doNothing() {
 	std::cout << "nothing to do" << std::endl;

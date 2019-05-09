@@ -5,7 +5,6 @@
 
 void Info::load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
 {
-	//Student st(groupCode, name, gradebookCode, surname);
 	studs.push(Student(groupCode, name, gradebookCode, surname));
 }
 
@@ -13,8 +12,6 @@ void Info::load(std::string& groupCode, std::string& name, int summaryMark, int 
 	int examMark, std::string& gradebookCode, std::string& surname,
 	std::string& subjectName, int termMark)
 {
-	//studs.push(Student(groupCode, name, gradebookCode, surname));
-	//studs.top().load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
 	Student st(groupCode, name, gradebookCode, surname);
 	try {
 		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
@@ -22,7 +19,7 @@ void Info::load(std::string& groupCode, std::string& name, int summaryMark, int 
 	catch (std::out_of_range) {
 		load(groupCode, name, gradebookCode, surname);
 		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
-		studs.print();
+		//studs.print();
 	}
 }
 
@@ -80,6 +77,18 @@ bool Info::Student::SubjectResult::areConcerted(int stateScaleMark, int summaryM
 	return flag;
 }
 
+void Info::Student::SubjectResult::defineStateScaleMarkInLetters(int stateScaleMark) {
+	switch (stateScaleMark) {
+	case 5: stateScaleMarkInLetters = "excellent"; break;
+	case 4: stateScaleMarkInLetters = "good"; break;
+	case 3: stateScaleMarkInLetters = "satisfactory"; break;
+	case 2: stateScaleMarkInLetters = "poor"; break;
+	case 0: stateScaleMarkInLetters = "absent"; break;
+	case -1: stateScaleMarkInLetters = "not allowed to take"; break;
+	default: break;
+	}
+}
+
 Info::Student::SubjectResult::SubjectResult(int summaryMark, int stateScaleMark, int examMark, std::string& name, int termMark)
 {
 	if (!isCorrectData(name, summaryMark, termMark, examMark, stateScaleMark))
@@ -89,6 +98,7 @@ Info::Student::SubjectResult::SubjectResult(int summaryMark, int stateScaleMark,
 	this->termMark = termMark;
 	this->examMark = examMark;
 	this->stateScaleMark = stateScaleMark;
+	defineStateScaleMarkInLetters(stateScaleMark);
 	
 	//std::cout << "SubjectResult " + this->name + " is created."<< std::endl;
 }
@@ -119,36 +129,37 @@ int Info::Student::SubjectResult::getStateScaleMark() const noexcept
 }
 
 
-bool Info::Student::SubjectResult::operator==(SubjectResult &other) const
+bool Info::Student::SubjectResult::operator==(const SubjectResult &other) const
 {	
 	return (!this->summaryMark == other.summaryMark)&&(this->name.compare(other.name) == 0);
 }
 
-bool Info::Student::SubjectResult::operator>(SubjectResult &other) const
+bool Info::Student::SubjectResult::operator>(const SubjectResult &other) const
 {
 	return ((this->summaryMark > other.summaryMark) || ((this->summaryMark == other.summaryMark) && (this->name.compare(other.name) > 0)));
 }
 
-bool Info::Student::SubjectResult::operator<(SubjectResult &other) const
+bool Info::Student::SubjectResult::operator<(const SubjectResult &other) const
 {
 	return ((this->summaryMark < other.summaryMark) || ((this->summaryMark == other.summaryMark) && (this->name.compare(other.name) < 0)));
 	;
 }
 
-bool Info::Student::SubjectResult::operator>=(SubjectResult &other) const
+bool Info::Student::SubjectResult::operator>=(const SubjectResult &other) const
 {
 	return ((this->summaryMark > other.summaryMark) || ((this->summaryMark == other.summaryMark) && (this->name.compare(other.name) == 0)));
 }
 
-bool Info::Student::SubjectResult::operator<=(SubjectResult &other) const
+bool Info::Student::SubjectResult::operator<=(const SubjectResult &other) const
 {
 	return ((this->summaryMark < other.summaryMark) || ((this->summaryMark == other.summaryMark) && (this->name.compare(other.name) == 0)));
 }
 
-void Info::Student::modifyRating(int summaryMark, int old_size_of_container) noexcept
+void Info::Student::modifyRating(int summaryMark, int old_size_of_container, int stateScaleMark) noexcept
 {
 	if (rating == UNDEFINED) rating = summaryMark;
-	else rating = (rating*old_size_of_container + summaryMark) / (old_size_of_container + 1);
+	else if (stateScaleMark >= 3) rating = (rating*old_size_of_container + summaryMark) / (old_size_of_container + 1);
+	else rating = 0;
 }
 
 bool Info::Student::isValidGradeBookCode(std::string & gradeBookCode) const noexcept
@@ -214,13 +225,12 @@ Info::Student::Student(std::string& groupCode, std::string& name, std::string& g
 void Info::Student::load(int summaryMark, int stateScaleMark, int examMark, std::string& subjectName, int termMark)
 {
 	int old_size = subs.size();
-	SubjectResult sr(summaryMark,  stateScaleMark, examMark,  subjectName, termMark);
-	/*
-		...object is loading into container SubjectResults...
-	*/
+	this->subs.push(SubjectResult(summaryMark, stateScaleMark, examMark, subjectName, termMark));
 	modifyStability(summaryMark);
-	modifyRating(summaryMark, old_size);
+	modifyRating(summaryMark, old_size, stateScaleMark);
 	//std::cout << "Agregated field \"stability\" was modified. Now: " << stability << std::endl;
+	//std::cout << "Rating of " << name << getRating() << std::endl;
+
 	//std::cout << "New object was succesfully loaded into StudentResults container" << std::endl;
 }
 
@@ -251,44 +261,73 @@ int Info::Student::getRating() const noexcept
 	return rating;
 }
 
-bool Info::Student::operator==(const Student &other) 
+bool Info::Student::operator==(const Student &other) const
 {
-	return (this->getRating() == other.getRating())&&(this->getGradebookCode().compare(other.getGradebookCode()) == 0);
+	return (this->getGradebookCode().compare(other.getGradebookCode()) == 0);
 }
 
-bool Info::Student::operator!=(const Student &other) 
+bool Info::Student::operator!=(const Student &other) const
 {
 	return !(*this == other);
 }
 
-bool Info::Student::operator>(Student &other) const
+bool Info::Student::operator>(const Student &other) const
 {
 	return ((this->getRating() > other.getRating())||
 		((this->getRating() == other.getRating())&&(this->getGradebookCode().compare(other.getGradebookCode()) > 0)));
 }
 
-bool Info::Student::operator<(Student &other) const
+bool Info::Student::operator<(const Student &other) const
 {
 	return ((this->getRating() < other.getRating()) ||
 		((this->getRating() == other.getRating()) && (this->getGradebookCode().compare(other.getGradebookCode()) < 0)));
 
 }
 
-bool Info::Student::operator>=(Student &other) const
+bool Info::Student::operator>=(const Student &other) const
 {
 	return ((this->getRating() > other.getRating()) ||
 		((this->getRating() == other.getRating()) && (this->getGradebookCode().compare(other.getGradebookCode()) >= 0)));
 
 }
 
-bool Info::Student::operator<=(Student &other) const
+bool Info::Student::operator<=(const Student &other) const
 {
 	return ((this->getRating() < other.getRating()) ||
 		((this->getRating() == other.getRating()) && (this->getGradebookCode().compare(other.getGradebookCode()) <= 0)));
 
 }
 
+
+//methods for debugging
 Info::Student::operator std::string() const
 {
-	return name;
+	return (name + ", rating: " + std::to_string(getRating()));
+}
+
+Info::Student::SubjectResult::operator std::string() const
+{
+	return (name + " " + std::to_string(getSummaryMark()));
+}
+
+void Info::Student::print() noexcept
+{
+
+	SubjectResults::Iterator i = subs.begin();
+	SubjectResults::Iterator end = subs.end();
+	while (i != end) {
+		std::cout << std::string(*i) << std::endl;
+		++i;
+	}
+}
+
+void Info::print() noexcept
+{
+	Students::Iterator i = studs.begin();
+	Students::Iterator end = studs.end();
+	while (i != end) {
+		std::cout << std::endl << '\t' << std::string(*i) << std::endl;
+		(*i).print();
+		++i;
+	}
 }

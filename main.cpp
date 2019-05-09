@@ -11,7 +11,7 @@ From 12 line to 18 line
 #include <cstring>
 #include "Info.h"
 #include "Builder.h"
-#include "lowLevelFunc.h"
+#include "writersInStream.h"
 
 const char *  copyright() {
 	return "Author: Pavlo Bilinskyi, student of Taras Shevchenko National University of Kyiv. Faculty of CSC, specialization Applied Mathematics";
@@ -101,6 +101,7 @@ int main(int argc, char** argv) {
 			}
 		}
 		catch (std::invalid_argument &ia) {
+			std::cout << "UPS" << std::endl;
 			std::cout << ia.what() << std::endl;
 		}
 	}
