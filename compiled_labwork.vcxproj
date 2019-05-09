@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="correct_input.txt" />
+    <Text Include="forStat1.txt" />
     <Text Include="out1.txt" />
     <Text Include="out2.txt" />
   </ItemGroup>

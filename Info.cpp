@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "ctype.h"
+#include <cmath>
 
 void Info::load(std::string& groupCode, std::string& name, std::string& gradebookCode, std::string& surname)
 {
@@ -127,6 +128,10 @@ int Info::Student::SubjectResult::getStateScaleMark() const noexcept
 {
 	return stateScaleMark;
 }
+std::string Info::Student::SubjectResult::getStateScaleMarkInLetters() const noexcept
+{
+	return stateScaleMarkInLetters;
+}
 
 
 bool Info::Student::SubjectResult::operator==(const SubjectResult &other) const
@@ -158,7 +163,7 @@ bool Info::Student::SubjectResult::operator<=(const SubjectResult &other) const
 void Info::Student::modifyRating(int summaryMark, int old_size_of_container, int stateScaleMark) noexcept
 {
 	if (rating == UNDEFINED) rating = summaryMark;
-	else if (stateScaleMark >= 3) rating = (rating*old_size_of_container + summaryMark) / (old_size_of_container + 1);
+	else if (stateScaleMark >= 3) rating = double((rating*old_size_of_container + summaryMark)) / (old_size_of_container + 1);
 	else rating = 0;
 }
 
@@ -228,6 +233,7 @@ void Info::Student::load(int summaryMark, int stateScaleMark, int examMark, std:
 	this->subs.push(SubjectResult(summaryMark, stateScaleMark, examMark, subjectName, termMark));
 	modifyStability(summaryMark);
 	modifyRating(summaryMark, old_size, stateScaleMark);
+	if (this->subs.top().getStateScaleMarkInLetters().compare("excellent") == 0) excellentCount++;
 	//std::cout << "Agregated field \"stability\" was modified. Now: " << stability << std::endl;
 	//std::cout << "Rating of " << name << getRating() << std::endl;
 
@@ -254,16 +260,24 @@ std::string Info::Student::getGroupCode() const noexcept
 	return groupCode;
 }
 
-//pre: if student has no results, return -1
+//pre: if student has no results, return 0
 int Info::Student::getStability() const noexcept
 {
+	if (stability == UNDEFINED) return 0;
 	return stability;
 }
 
-//pre: if student has no results, return -1
-int Info::Student::getRating() const noexcept
+//pre: if student has no results, return 0
+double Info::Student::getRating() const noexcept
 {
+	if (rating == UNDEFINED) return 0;
 	return rating;
+}
+//pre: if student has no results, return 0
+int Info::Student::getExcellentCount() const noexcept
+{
+	return excellentCount;
+
 }
 
 bool Info::Student::operator==(const Student &other) const
@@ -307,7 +321,7 @@ bool Info::Student::operator<=(const Student &other) const
 //methods for debugging
 Info::Student::operator std::string() const
 {
-	return (name + ", rating: " + std::to_string(getRating()));
+	return (name + "; rating: " + std::to_string(std::round(getRating())) + "; stability: " + std::to_string(getStability()));
 }
 
 Info::Student::SubjectResult::operator std::string() const

@@ -61,7 +61,7 @@ void Builder::loadData(Info& inf, const char* filename) {
 	if (state_scale_mark_sum_footer != stateScaleMarks_sum) throw std::invalid_argument("202 -1 " + message202);
 	if (!ifs.eof()) throw std::invalid_argument("400 " + std::to_string(physicalNumberOfLine) + " " + message400);
 
-	inf.print();
+	//inf.print();
 }
 
 //pre: the fields of s mush hold the requirements, that is stated is condition of Labaratory work

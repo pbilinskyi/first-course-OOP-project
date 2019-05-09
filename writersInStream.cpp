@@ -45,7 +45,24 @@ std::ostream& outputInStream(std::ostream& os, Info& inf) {
 }
 
 std::ostream& statInStream(std::ostream& os, Info& inf) {
+	inf.studs.sort();
+//	inf.print();
+	auto itr = inf.studs.begin();
+	auto end = inf.studs.end();
+	while((os) && ((*itr).getRating() >= 75) && (itr != end))
+	{
+		os << (*itr).getGradebookCode() << ", " <<  (*itr).getSurname() << ", " << (*itr).getName() << ", ";
+		os << std::to_string((*itr).getStability()) << ", " << std::to_string((*itr).getExcellentCount()) << std::endl;
+		(*itr).subs.sort();
+		//(*itr).subs.print();
+
+		auto itr_subs = (*itr).subs.begin();
+		auto end_subs = (*itr).subs.end();
+		while (itr_subs != end_subs) {
+			os << "\t" << (*itr_subs).getStateScaleMarkInLetters() << ", " << (*itr_subs).getName() << std::endl;
+			++itr_subs;
+		}
+		++itr;
+	}
 	return os;
 }
-
-std::string& constructNote();

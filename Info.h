@@ -29,6 +29,7 @@ private:
 			int getTermMark() const noexcept;
 			int getExamMark() const noexcept;
 			int getStateScaleMark() const noexcept;
+			std::string getStateScaleMarkInLetters() const noexcept;
 			bool operator==(const SubjectResult&) const;
 			bool operator>(const SubjectResult&) const;
 			bool operator<(const SubjectResult&) const;
@@ -49,9 +50,10 @@ private:
 		int currentWorth = MAX_RESULT;
 		int currentBest = MIN_RESULT;
 		int stability = UNDEFINED;
+		int excellentCount = 0;
 		void modifyStability(int summaryMark) noexcept;
 		//------------
-		int rating = UNDEFINED;
+		double rating = UNDEFINED;
 		void modifyRating(int summaryMark, int old_size_of_container, int stateScaleMark) noexcept;
 		//checkers of the corectness of input data
 		bool isValidGradeBookCode(std::string& gradebookCode) const noexcept;
@@ -70,7 +72,8 @@ private:
 		std::string getGradebookCode() const noexcept;
 		std::string getGroupCode() const noexcept;
 		int getStability() const noexcept;
-		int getRating() const noexcept;
+		int getExcellentCount() const noexcept;
+		double getRating() const noexcept;
 		bool operator==(const Student&) const;
 		bool operator!=(const Student&) const;
 		bool operator>(const Student&)	const;

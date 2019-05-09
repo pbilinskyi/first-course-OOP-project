@@ -1,0 +1,12 @@
+31111111, Black, Mary, 0, 2
+	excellent, Matan
+	excellent, LinearAlgebra
+11111111, Stoyan, Alex, 19, 1
+	excellent, Matan
+	good, LinearAlgebra
+51111111, Blue, Sam, 5, 1
+	excellent, Matan
+	good, LinearAlgebra
+41111111, White, Jack, 10, 0
+	good, LinearAlgebra
+	satisfactory, Matan

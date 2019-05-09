@@ -58,5 +58,8 @@
     <Text Include="out2.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="forStat1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

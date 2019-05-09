@@ -1,9 +1,17 @@
-header	:	7
+header	:	15
 1:	K-10:	Paul:			100:		5:	40:	12345678:	Bilinskyi:			Matan:					60
 2:	K-10:	Paul:			100:		5:	40:	12345678:	Bilinskyi: 			Linear Algebra:			60
 3:	K-10:	Paul:			90:			5:	32:	12345678:	Bilinskyi: 			Discrete Mathematics:	58
 4:	K-10:	Paul:			80:			4:	40:	12345678:	Bilinskyi: 			VDUS:					40
 5:	K-10:	Paul:			55:			2:	25:	12345678:	Bilinskyi: 			Programming:			30
-6:	K-10:	Alex:			75:			4:	25: 11111111:	Stoyan:				Matan:					50
-7:	K-10:	Alex:			80:			4:	25: 11111111:	Stoyan:				Linear Algebra:			55
-footer	:	29
+6:	K-10:	Alex:			100:		5:	40: 11111111:	Stoyan:				Matan:					60
+7:	K-10:	Alex:			81:			4:	26: 11111111:	Stoyan:				Linear Algebra:			55
+8:	K-10:	Jeane:			0:			0:	0:	21111111:	Brown:				Matan:					0
+9:	K-10:	Jeane:			60:			3:	24: 21111111:	Brown:				Linear Algebra:			36
+10:	K-10:	Mary:			100:		5:	40: 31111111:	Black:				Matan:					60
+11:	K-10:	Mary:			100:		5:	40: 31111111:	Black:				Linear Algebra:			60
+12:	K-10:	Jack:			70:			3:	40: 41111111:	White:				Matan:					30
+13:	K-10:	Jack:			80:			4:	25: 41111111:	White:				Linear Algebra:			55
+14:	K-10:	Sam:			90:			5:	40: 51111111:	Blue:				Matan:					50
+15:	K-10:	Sam:			85:			4:	30: 51111111:	Blue:				Linear Algebra:			55
+footer	:	59
