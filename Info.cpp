@@ -249,6 +249,11 @@ std::string Info::Student::getGradebookCode() const noexcept
 	return gradebookCode;
 }
 
+std::string Info::Student::getGroupCode() const noexcept
+{
+	return groupCode;
+}
+
 //pre: if student has no results, return -1
 int Info::Student::getStability() const noexcept
 {

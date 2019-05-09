@@ -1,2 +1,9 @@
-Alex
-Paul
+header: 7
+1:	K-10:	Alex:	80:	4:	25:	11111111:	Stoyan:	LinearAlgebra:	55
+2:	K-10:	Alex:	75:	4:	25:	11111111:	Stoyan:	Matan:	50
+3:	K-10:	Paul:	55:	2:	25:	12345678:	Bilinskyi:	Programming:	30
+4:	K-10:	Paul:	80:	4:	40:	12345678:	Bilinskyi:	VDUS:	40
+5:	K-10:	Paul:	90:	5:	32:	12345678:	Bilinskyi:	DiscreteMathematics:	58
+6:	K-10:	Paul:	100:	5:	40:	12345678:	Bilinskyi:	LinearAlgebra:	60
+7:	K-10:	Paul:	100:	5:	40:	12345678:	Bilinskyi:	Matan:	60
+footer: 29

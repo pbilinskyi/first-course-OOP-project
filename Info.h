@@ -68,6 +68,7 @@ private:
 		std::string getName() const noexcept;
 		std::string getSurname() const noexcept;
 		std::string getGradebookCode() const noexcept;
+		std::string getGroupCode() const noexcept;
 		int getStability() const noexcept;
 		int getRating() const noexcept;
 		bool operator==(const Student&) const;
