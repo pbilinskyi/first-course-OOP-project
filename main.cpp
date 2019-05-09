@@ -75,6 +75,10 @@ void notEnoughArguments(const char* command) {
 	std::cout <<++command <<" undefined" << std::endl;
 }
 
+void doNothing() {
+	std::cout << "nothing to do" << std::endl;
+}
+
 int main(int argc, char** argv) {
 	std::cout << copyright() << std::endl;
 	help();

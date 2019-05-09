@@ -21,13 +21,13 @@
     <ClCompile Include="Info.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="lowLevelFunc.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Lexer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="writersInStream.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="correct_input.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="out1.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

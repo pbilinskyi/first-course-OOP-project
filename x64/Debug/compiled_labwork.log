@@ -1,3 +1,2 @@
-﻿  Info.cpp
-c:\users\paul white\source\repos\connecting\compiled_labwork\info.cpp(238): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+﻿  writersInStream.cpp
   compiled_labwork.vcxproj -> C:\Users\Paul White\source\repos\connecting\Lab3, Stage 2\x64\Debug\compiled_labwork.exe
