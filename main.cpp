@@ -46,6 +46,7 @@ bool do_command(Info& inf, const char* fname, InfoResults infRes) {
 
 void commandHandler(const char* command, const char* filename, Info& inf) {
 	std::cout << (++command) << " " << filename << " : ";
+	if (std::strcmp(filename, "#con") == 0) std::cout << std::endl;
 	bool flag = false;
 	if (std::strcmp(command, "output") == 0) {
 		flag = do_command(inf, filename, outputInStream);
@@ -54,8 +55,10 @@ void commandHandler(const char* command, const char* filename, Info& inf) {
 		flag = do_command(inf, filename, statInStream);
 	}
 
-	if (flag) std::cout << "OK" << std::endl;
-	else std::cout << "UPS" << std::endl;
+	if (std::strcmp(filename, "#con") != 0) {
+		if (flag) std::cout << "OK" << std::endl;
+		else std::cout << "UPS" << std::endl;
+	}
 }
 
 

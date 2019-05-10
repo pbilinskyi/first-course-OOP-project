@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <iostream>
 
 template <class T> class Stack{
 public:
@@ -43,22 +44,6 @@ private:
 	Node* sort_(Node* head) const;
 
 public:
-	/*class BaseIterator {
-	public:
-		BaseIterator(Node* cur = nullptr);
-		BaseIterator& operator++(); //move to the next node if it exists; else nothing
-		bool operator==(BaseIterator& other) const; //if this or other iterator is at the nullptr position, throw invlid_argument 
-		bool operator!=(BaseIterator&) const;		//if this or other iterator is at the nullptr position, throw invlid_argument 
-	protected:
-		Node *current;
-	};
-
-	class ConstIterator : public BaseIterator {
-	public:
-		using BaseIterator::BaseIterator;
-		const T& operator*() const;
-		ConstIterator& operator++();
-	};*/
 	class Iterator{
 	public:
 		Iterator(Node* cur = nullptr);

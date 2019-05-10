@@ -7,6 +7,7 @@ std::ostream& outputInStream(std::ostream& os, Info& inf) {
 	auto i = inf.studs.begin();
 	auto end = inf.studs.end();
 
+
 	//calculate header and footer fields 
 	int noteCounter = 0;
 	int stateScaleMarkSum = 0;
@@ -39,7 +40,7 @@ std::ostream& outputInStream(std::ostream& os, Info& inf) {
 		
 		++i;
 	}
-	if (os) os << "footer: " << stateScaleMarkSum;
+	if (os) os << "footer: " << stateScaleMarkSum << std::endl;
 
 	return os;
 }

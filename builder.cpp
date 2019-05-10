@@ -12,7 +12,7 @@ void Builder::loadData(Info& inf, const char* filename) {
 
 	std::string s;
 	int notes_counter = 0;
-	int stateScaleMark_sum = 0;
+	int stateScaleMarks_sum = 0;
 	int expectedNextNumber = 1;
 	int physicalNumberOfLine = -1;
 
@@ -131,6 +131,9 @@ int Builder::getIntAndConvert(Lexer & lex, int physicalNumberOfLine, std::string
 			case Lexer::LineType::Footer:
 				throw std::invalid_argument("204 " + std::to_string(physicalNumberOfLine) + " " + message204);
 				break;
+			case Lexer::LineType::Empty:
+				return 0;
+				break;
 			default:
 				break;
 			}
@@ -141,13 +144,15 @@ int Builder::getIntAndConvert(Lexer & lex, int physicalNumberOfLine, std::string
 		{
 		case Lexer::LineType::Header:
 			throw std::invalid_argument("103 " + std::to_string(physicalNumberOfLine) + " " + message103);
-
 			break;
 		case Lexer::LineType::Line:
 			throw std::invalid_argument("302 " + std::to_string(physicalNumberOfLine) + " " + message302);
 			break;
 		case Lexer::LineType::Footer:
 			throw std::invalid_argument("203 " + std::to_string(physicalNumberOfLine) + " " + message203);
+			break;
+		case Lexer::LineType::Empty:
+			return 0;
 			break;
 		default:
 			break;

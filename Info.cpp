@@ -17,7 +17,7 @@ void Info::load(std::string& groupCode, std::string& name, int summaryMark, int 
 	try {
 		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
 	}
-	catch (std::out_of_range) {
+	catch (std::out_of_range& oor) {
 		load(groupCode, name, gradebookCode, surname);
 		studs.find(st).load(summaryMark, stateScaleMark, examMark, subjectName, termMark);
 		//studs.print();
@@ -136,7 +136,7 @@ std::string Info::Student::SubjectResult::getStateScaleMarkInLetters() const noe
 
 bool Info::Student::SubjectResult::operator==(const SubjectResult &other) const
 {	
-	return (!this->summaryMark == other.summaryMark)&&(this->name.compare(other.name) == 0);
+	return (((this->summaryMark) == other.summaryMark)&&((this->name.compare(other.name)) == 0));
 }
 
 bool Info::Student::SubjectResult::operator>(const SubjectResult &other) const
@@ -171,7 +171,7 @@ bool Info::Student::isValidGradeBookCode(std::string & gradeBookCode) const noex
 {
 	bool flag = true;
 	size_t n = gradeBookCode.size();
-	for (int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		if (!isdigit(gradeBookCode[i])) flag = false;
 	}
 	if (n > 8) flag = false;
@@ -182,7 +182,7 @@ bool Info::Student::isValidGroupCode(std::string & groupCode) const noexcept
 {
 	bool flag = true;
 	size_t n = groupCode.size();
-	for (int i = 0; i < n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		if ((!isalpha(groupCode[i]))&&(!isdigit(groupCode[i]))&&(groupCode[i] != '-')) flag = false;
 	}
 	if (n > 4) flag = false;
@@ -193,7 +193,7 @@ bool Info::Student::hasValidNameSymbols(std::string &s) const noexcept
 {
 	bool flag = true;
 	size_t n = s.size();
-	for (int i = 0; i < n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		if (!(isalpha(s[i])||((s[i] == '\'')||(s[i] == '-')))) flag = false;
 	}
 	return flag;
